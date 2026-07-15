@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A ResumeStudioV3Ref application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/resumestudiov3ref.exe %u
+Terminal=false
+Type=Application
+Icon=resumestudiov3ref.exe
+Categories=Utility;
+StartupWMClass=resumestudiov3ref.exe
+
+ 

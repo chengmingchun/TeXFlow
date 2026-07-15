@@ -1,0 +1,10 @@
+/bin/
+/.task/
+/build/appicon.png
+/frontend/dist/
+/frontend/node_modules/
+/frontend/bindings/
+/tools/tectonic/tectonic.exe
+.resume-studio/
+*.resume-studio.tmp
+*.resume-studio.bak
