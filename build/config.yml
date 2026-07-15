@@ -5,11 +5,11 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
-  companyName: "Resume Studio" # The name of the company
-  productName: "Resume Studio" # The name of the application
-  productIdentifier: "dev.resumestudio.app" # The unique product identifier
+  companyName: "TeXFlow" # The name of the company
+  productName: "TeXFlow" # The name of the application
+  productIdentifier: "dev.texflow.app" # The unique product identifier
   description: "Structured local-first LaTeX resume workspace" # The application description
-  copyright: "(c) 2026, Resume Studio" # Copyright text
+  copyright: "(c) 2026, TeXFlow" # Copyright text
   comments: "Built with Wails 3" # Comments
   version: "0.1.0" # The application version
   # cfBundleIconName: "appicon" # The macOS icon name in Assets.car icon bundles (optional)

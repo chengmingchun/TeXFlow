@@ -5,11 +5,11 @@
 	"info": {
 		"0000": {
 			"ProductVersion": "0.1.0",
-			"CompanyName": "My Company",
-			"FileDescription": "A ResumeStudioV3Ref application",
-			"LegalCopyright": "© 2026, My Company",
-			"ProductName": "My Product",
-			"Comments": "This is a comment"
+			"CompanyName": "TeXFlow",
+			"FileDescription": "Structured local-first LaTeX resume workspace",
+			"LegalCopyright": "(c) 2026, TeXFlow",
+			"ProductName": "TeXFlow",
+			"Comments": "Built with Wails 3"
 		}
 	}
 }

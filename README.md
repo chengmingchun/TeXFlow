@@ -26,7 +26,7 @@
 | 聚焦编辑 | 只编辑当前段落，减少长文档中的视觉干扰 |
 | 完整源码 | 随时切换回 `.tex` 完整源文件，不锁定模板和宏包 |
 | 自动保存 | 停止输入 800ms 后原子写回源文件 |
-| 自动编译 | 依次探测 `latexmk`、Tectonic、`xelatex`，选择可用引擎 |
+| 自动编译 | 依次探测 `latexmk`、`xelatex`、Tectonic，优先使用兼容复杂中文模板的 XeLaTeX |
 | 稳定预览 | 编译失败时保留上一版成功 PDF，不让预览突然消失 |
 | 编译调度 | 取消旧任务并丢弃乱序结果，避免快速输入时预览回退 |
 | 错误诊断 | 从编译日志中提取文件、行号和错误信息 |
@@ -107,7 +107,7 @@ wails3 build
 3. 构建 React 前端和 Go 桌面程序；
 4. 下载并复制 Tectonic 0.16.9 到 `bin/tools/tectonic.exe`。
 
-如果系统已经安装 `latexmk + xelatex`，TeXFlow 会优先使用系统工具。否则使用随应用携带的 Tectonic。Tectonic 首次编译需要联网按需下载 TeX 资源，此后使用用户目录中的缓存；Windows 系统代理会自动传递给编译进程。
+如果系统已经安装 `latexmk + xelatex` 或 `xelatex`，TeXFlow 会优先使用系统工具。否则使用随应用携带的 Tectonic。Tectonic 首次编译需要联网按需下载 TeX 资源，此后使用用户目录中的缓存；Windows 系统代理会自动传递给编译进程。对于复杂的 `ctex` 中文模板，推荐安装 MiKTeX 或 TeX Live，以避开 Tectonic 在 Windows 下的字体兼容限制。
 
 ## 架构
 
@@ -124,8 +124,8 @@ Go Application
 ├── Compile Coordinator
 └── Engine Resolver
         ├── latexmk + XeLaTeX
-        ├── bundled Tectonic
-        └── system xelatex
+        ├── system xelatex
+        └── bundled Tectonic
 ```
 
 ## 项目结构
