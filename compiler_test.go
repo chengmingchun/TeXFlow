@@ -6,6 +6,13 @@ import (
 	"testing"
 )
 
+func TestCompilerPrefersXeLaTeX(t *testing.T) {
+	engines := compilerEngines()
+	if len(engines) == 0 || engines[0].name != "xelatex" {
+		t.Fatalf("expected xelatex to be preferred, got %#v", engines)
+	}
+}
+
 func TestResolveBundledTectonic(t *testing.T) {
 	path, ok := resolveCompiler("tectonic")
 	if !ok {

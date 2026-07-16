@@ -175,6 +175,61 @@ func (a *App) Compile(projectPath string) CompileResult {
 	return result
 }
 
+func (a *App) ExportPDF(projectPath string) (string, error) {
+	state, err := a.LoadProject(projectPath)
+	if err != nil {
+		return "", err
+	}
+
+	a.mu.Lock()
+	encoded := a.lastPDF[projectPath]
+	a.mu.Unlock()
+	if encoded == "" {
+		return "", errors.New("尚无可导出的 PDF，请先成功编译一次")
+	}
+
+	filename := strings.TrimSuffix(state.MainFile, filepath.Ext(state.MainFile)) + ".pdf"
+	dialog := application.Get().Dialog.SaveFileWithOptions(&application.SaveFileDialogOptions{
+		Title:                "导出 PDF",
+		Directory:            state.Path,
+		Filename:             filename,
+		ButtonText:           "导出",
+		CanCreateDirectories: true,
+		Filters: []application.FileFilter{
+			{DisplayName: "PDF 文件", Pattern: "*.pdf"},
+		},
+	})
+	destination, err := dialog.PromptForSingleSelection()
+	if err != nil || destination == "" {
+		return "", err
+	}
+	if filepath.Ext(destination) == "" {
+		destination += ".pdf"
+	}
+
+	data, err := base64.StdEncoding.DecodeString(encoded)
+	if err != nil {
+		return "", fmt.Errorf("读取待导出的 PDF 失败: %w", err)
+	}
+	if err := os.WriteFile(destination, data, 0644); err != nil {
+		return "", fmt.Errorf("导出 PDF 失败: %w", err)
+	}
+	return destination, nil
+}
+
+func (a *App) LocateBlock(projectPath, blockID string) (PDFLocation, error) {
+	state, err := a.LoadProject(projectPath)
+	if err != nil {
+		return PDFLocation{}, err
+	}
+	for _, block := range state.Blocks {
+		if block.ID == blockID {
+			return locatePDFBlock(context.Background(), state, block)
+		}
+	}
+	return PDFLocation{}, fmt.Errorf("未找到段落 %q", blockID)
+}
+
 func findMainTex(dir string) (string, error) {
 	if _, err := os.Stat(filepath.Join(dir, "main.tex")); err == nil {
 		return "main.tex", nil

@@ -26,8 +26,11 @@
 | 聚焦编辑 | 只编辑当前段落，减少长文档中的视觉干扰 |
 | 完整源码 | 随时切换回 `.tex` 完整源文件，不锁定模板和宏包 |
 | 自动保存 | 停止输入 800ms 后原子写回源文件 |
-| 自动编译 | 依次探测 `latexmk`、`xelatex`、Tectonic，优先使用兼容复杂中文模板的 XeLaTeX |
+| 自动编译 | 依次探测 `xelatex`、`latexmk`、Tectonic，优先使用兼容复杂中文模板的 XeLaTeX |
 | 稳定预览 | 编译失败时保留上一版成功 PDF，不让预览突然消失 |
+| PDF 导出 | 通过系统另存为窗口导出最后一次成功编译的 PDF |
+| 段落联动 | 聚焦 ResumeBlock 时通过 SyncTeX 自动跳页、完整显示文字块并高亮，支持手动缩放 |
+| 自由分栏 | 拖动两处分隔条调整结构树、编辑器和 PDF 预览占比，布局自动保存 |
 | 编译调度 | 取消旧任务并丢弃乱序结果，避免快速输入时预览回退 |
 | 错误诊断 | 从编译日志中提取文件、行号和错误信息 |
 | 静默编译 | Windows 下所有 LaTeX 子进程使用无窗口模式，不弹出 CMD 窗口 |
@@ -123,8 +126,8 @@ Go Application
 ├── Atomic File Writer
 ├── Compile Coordinator
 └── Engine Resolver
-        ├── latexmk + XeLaTeX
         ├── system xelatex
+        ├── latexmk + XeLaTeX
         └── bundled Tectonic
 ```
 

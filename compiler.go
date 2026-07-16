@@ -19,22 +19,26 @@ type engineSpec struct {
 	args          func(ProjectState, string) []string
 }
 
-func compileLatex(ctx context.Context, project ProjectState, revision int64) CompileResult {
-	started := time.Now()
-	result := CompileResult{Revision: revision, Diagnostics: []Diagnostic{}}
-	outputDir := filepath.Join(project.Path, ".resume-studio", "build")
-	_ = os.MkdirAll(outputDir, 0755)
-	engines := []engineSpec{
-		{name: "latexmk", command: "latexmk", args: func(p ProjectState, out string) []string {
-			return []string{"-xelatex", "-synctex=1", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "-outdir=" + out, p.MainFile}
-		}},
+func compilerEngines() []engineSpec {
+	return []engineSpec{
 		{name: "xelatex", command: "xelatex", args: func(p ProjectState, out string) []string {
 			return []string{"-synctex=1", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "-output-directory=" + out, p.MainFile}
+		}},
+		{name: "latexmk", command: "latexmk", args: func(p ProjectState, out string) []string {
+			return []string{"-xelatex", "-synctex=1", "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", "-outdir=" + out, p.MainFile}
 		}},
 		{name: "tectonic", command: "tectonic", args: func(p ProjectState, out string) []string {
 			return []string{"--synctex", "--keep-logs", "-o", out, p.MainFile}
 		}},
 	}
+}
+
+func compileLatex(ctx context.Context, project ProjectState, revision int64) CompileResult {
+	started := time.Now()
+	result := CompileResult{Revision: revision, Diagnostics: []Diagnostic{}}
+	outputDir := filepath.Join(project.Path, ".resume-studio", "build")
+	_ = os.MkdirAll(outputDir, 0755)
+	engines := compilerEngines()
 	var chosen *engineSpec
 	for i := range engines {
 		if executable, ok := resolveCompiler(engines[i].command); ok {
